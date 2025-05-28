@@ -46,7 +46,7 @@ Encryptor& Encryptor::getInstance() {
 std::vector<byte> Encryptor::encrypt(const std::vector<byte>& data, const std::string& password) {
     if (data.empty()) return {};
     
-    std::vector<byte> key = generateKey(password, password.size()); 
+    std::vector<byte> key = generateKey(password, 32); 
     
     std::vector<byte> sbox(SBOX_SIZE);
     initSBox(sbox, key);

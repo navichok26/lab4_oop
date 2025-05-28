@@ -11,7 +11,6 @@ private:
     Encryptor& operator=(const Encryptor&) = delete;
     std::vector<byte> generateKey(const std::string& password, size_t length);
     
-    // Добавляем метод для инициализации S-box в RC4
     void initSBox(std::vector<byte>& sbox, const std::vector<byte>& key);
 
 public:
