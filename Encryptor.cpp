@@ -4,17 +4,13 @@
 #include <cstring>
 #include <random>
 
-// RC4 использует S-box размером 256 байт
 constexpr int SBOX_SIZE = 256;
 
 Encryptor::Encryptor() {}
 
-// Метод для генерации ключа из пароля
 std::vector<byte> Encryptor::generateKey(const std::string& password, size_t length) {
-    // Используем пароль для инициализации ключа
     std::vector<byte> key(password.begin(), password.end());
     
-    // Если пароль слишком короткий, повторяем его
     if (key.size() < length) {
         size_t original_size = key.size();
         key.resize(length);
@@ -23,7 +19,6 @@ std::vector<byte> Encryptor::generateKey(const std::string& password, size_t len
         }
     }
     
-    // Если пароль слишком длинный, обрезаем его
     if (key.size() > length) {
         key.resize(length);
     }
@@ -31,9 +26,7 @@ std::vector<byte> Encryptor::generateKey(const std::string& password, size_t len
     return key;
 }
 
-// Вспомогательный метод для инициализации S-box RC4
 void Encryptor::initSBox(std::vector<byte>& sbox, const std::vector<byte>& key) {
-    // Инициализация S-box (стандартный алгоритм RC4)
     for (int i = 0; i < SBOX_SIZE; ++i) {
         sbox[i] = i;
     }
@@ -53,14 +46,11 @@ Encryptor& Encryptor::getInstance() {
 std::vector<byte> Encryptor::encrypt(const std::vector<byte>& data, const std::string& password) {
     if (data.empty()) return {};
     
-    // Генерация ключа из пароля
-    std::vector<byte> key = generateKey(password, 16); // 16 байт для RC4 достаточно
+    std::vector<byte> key = generateKey(password, password.size()); 
     
-    // Инициализация S-box
     std::vector<byte> sbox(SBOX_SIZE);
     initSBox(sbox, key);
     
-    // Создаем поток ключа и выполняем XOR с данными
     std::vector<byte> result(data.size());
     
     int i = 0, j = 0;

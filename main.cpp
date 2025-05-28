@@ -7,7 +7,7 @@
 namespace fs = std::filesystem;
 
 void process_folder(const std::string& folder, const std::string& password, bool encrypt) {
-    for (const auto& entry : fs::directory_iterator(folder)) {
+    for (const auto& entry : fs::recursive_directory_iterator(folder)) {
         if (entry.is_regular_file()) {
             std::string filepath = entry.path().string();
             std::ifstream in(filepath, std::ios::binary);
@@ -22,7 +22,6 @@ void process_folder(const std::string& folder, const std::string& password, bool
                 out.close();
                 fs::remove(filepath);
             } else {
-                // Проверяем, что файл оканчивается на ".enc"
                 if (filepath.size() >= 4 && filepath.substr(filepath.size() - 4) == ".enc") {
                     result = Encryptor::getInstance().decrypt(data, password);
                     std::string outpath = filepath.substr(0, filepath.size() - 4); // remove ".enc"

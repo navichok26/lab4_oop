@@ -9,7 +9,6 @@ add_executable(lab4_oop
     Encryptor.cpp
 )
 
-# Для Windows: включить поддержку длинных путей, если нужно
 if (WIN32)
     add_definitions(-DUNICODE -D_UNICODE)
 endif()
